@@ -1,0 +1,12 @@
+{
+  "name": "rtr",
+  "version": "0.0.0",
+  "description": "Simple router",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": "",
+  "author": "graham@grahamlyons.com",
+  "license": "BSD"
+}
