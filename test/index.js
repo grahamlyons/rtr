@@ -5,12 +5,16 @@ var Route = require('../lib/route').Route;
 var Router = require('../lib/router').Router;
 var HttpRouter = require('../index');
 
-function test(testFunction) {
+function test(message, testFunction) {
+    if (!testFunction) {
+        testFunction = message;
+        message = '';
+    }
     try{
         testFunction.call();
-        console.log('PASSED');
+        console.log('PASSED', message);
     } catch(e) {
-        console.error('FAILED');
+        console.error('FAILED', message);
         console.error(e.message);
         console.error(e.stack);
     }
@@ -154,4 +158,17 @@ test(function() {
     });
     h.dispatch(request, null);
     assert.ok(success);
+});
+
+test('Not found handler', function() {
+    var success = true;
+    var request = new http.IncomingMessage();
+    var h = new HttpRouter(function(req, res) {
+        assert.equal(req, request);
+        success = false;
+    });
+    request.method = 'GET';
+    request.url = '/hello/world';
+    h.dispatch(request, null);
+    assert.ok(!success);
 });
