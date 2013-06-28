@@ -40,4 +40,4 @@ HttpRouter.prototype.dispatch = function(request, response) {
     });
 }
 
-module.exports.HttpRouter = HttpRouter;
+module.exports = HttpRouter;

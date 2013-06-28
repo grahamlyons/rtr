@@ -3,7 +3,7 @@ var http = require('http');
 
 var Route = require('../lib/route').Route;
 var Router = require('../lib/router').Router;
-var HttpRouter = require('../index').HttpRouter;
+var HttpRouter = require('../index');
 
 function test(testFunction) {
     try{
