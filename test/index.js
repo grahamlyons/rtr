@@ -104,20 +104,7 @@ test(function() {
 
 /**
  * HttpRouter
- */
-test(function() {
-    var h = new HttpRouter();
-    var methods = [
-        'GET',
-        'HEAD',
-        'PUT',
-        'POST',
-        'DELETE'
-    ];
-    for(var i in methods) {
-        assert.ok(h.routes[methods[i]] instanceof Router);
-    }
-});
+*/
 
 test(function() {
     var h = new HttpRouter();
@@ -171,4 +158,16 @@ test('Not found handler', function() {
     request.url = '/hello/world';
     h.dispatch(request, null);
     assert.ok(!success);
+});
+
+test('Does not blow up without not found handler', function() {
+    var request = new http.IncomingMessage();
+    var h = new HttpRouter();
+    request.method = 'GET';
+    request.url = '/hello/world';
+    try{
+        assert.ok(!h.dispatch(request, null));
+    } catch(e) {
+        assert.fail('It blew up');
+    }
 });

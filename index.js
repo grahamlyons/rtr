@@ -15,37 +15,35 @@ var HttpRouter = function(unhandledRequestCallback) {
             return self.addRoute(method, path, handler);
         };
     },
-    method, i;
-
-    this.routes = {};
+    method, i,
+    routes = {};
 
     for (i in methods) {
         method = methods[i];
-        this.routes[method] = new Router();
+        routes[method] = new Router();
         this[method.toLowerCase()] = makeAddRoute(method);
     }
 
-    this.unhandledRequestCallback = unhandledRequestCallback;
-}
-
-HttpRouter.prototype.addRoute = function(method, path, handler) {
-    this.routes[method].add(path, handler);
-    return this;
-}
-
-HttpRouter.prototype.dispatch = function(request, response) {
-    var method = request.method.toUpperCase(),
-        path = urlparse(request.url).pathname,
-        handlers = this.routes[method].match(path),
-        handled = false;
-    handlers.forEach(function(handler) {
-        handled = true;
-        handler.call(null, request, response);
-    });
-    if (!handled) {
-        this.unhandledRequestCallback.call(null, request, response);
+    this.addRoute = function(method, path, handler) {
+        routes[method].add(path, handler);
+        return this;
     }
-    return handled;
+
+    this.dispatch = function(request, response) {
+        var method = request.method.toUpperCase(),
+            path = urlparse(request.url).pathname,
+            handlers = routes[method].match(path),
+            handled = false;
+        handlers.forEach(function(handler) {
+            handled = true;
+            handler.call(null, request, response);
+        });
+        if (!handled && unhandledRequestCallback) {
+            unhandledRequestCallback.call(null, request, response);
+        }
+        return handled;
+    }
+
 }
 
 module.exports = HttpRouter;
