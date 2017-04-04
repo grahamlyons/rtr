@@ -1,0 +1,10 @@
+platform: linux
+  image_resource:
+    type: docker-image
+    source: {repository: node}
+  inputs:
+  - name: rtr
+  run:
+    dir: rtr
+    path: npm
+    args: ["test"] 
