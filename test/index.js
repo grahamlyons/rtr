@@ -5,6 +5,8 @@ var Route = require('../lib/route').Route;
 var Router = require('../lib/router').Router;
 var HttpRouter = require('../index');
 
+var state = { exit: 0 }
+
 function test(message, testFunction) {
     if (!testFunction) {
         testFunction = message;
@@ -14,7 +16,8 @@ function test(message, testFunction) {
         testFunction.call();
         console.log('\x1b[32mPASSED: %s\x1b[0m', message);
     } catch(e) {
-        console.error('\x1b[31mFAILED: \x1b[0m', message);
+        state.exit++;
+        console.error('\x1b[31mFAILED: %s\x1b[0m', message);
         console.error(e.message);
         console.error(e.stack);
     }
@@ -152,7 +155,6 @@ test('Not found handler', function() {
     var request = new http.IncomingMessage();
     var h = new HttpRouter(function(req, res) {
         assert.equal(req, request);
-        success = false;
     });
     request.method = 'GET';
     request.url = '/hello/world';
@@ -171,3 +173,5 @@ test('Does not blow up without not found handler', function() {
         assert.fail('It blew up');
     }
 });
+
+process.exit(state.exit);
