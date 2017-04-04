@@ -12,9 +12,9 @@ function test(message, testFunction) {
     }
     try{
         testFunction.call();
-        console.log('PASSED', message);
+        console.log('\x1b[32mPASSED: %s\x1b[0m', message);
     } catch(e) {
-        console.error('FAILED', message);
+        console.error('\x1b[31mFAILED: \x1b[0m', message);
         console.error(e.message);
         console.error(e.stack);
     }
