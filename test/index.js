@@ -155,6 +155,7 @@ test('Not found handler', function() {
     var request = new http.IncomingMessage();
     var h = new HttpRouter(function(req, res) {
         assert.equal(req, request);
+        success = false;
     });
     request.method = 'GET';
     request.url = '/hello/world';
