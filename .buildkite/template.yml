@@ -1,5 +1,5 @@
 name: rtr
 description: Minimal NodeJS router
 steps:
-  - command: buildkite-agent pipeline upload
-    label: :pipeline:
+  - command: "buildkite-agent pipeline upload"
+    label: ":pipeline:"
